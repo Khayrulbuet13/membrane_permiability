@@ -67,7 +67,7 @@ def write_gro_file(atoms,  name_str_arr, filename, velocity = None):
 
 
 
-def add_layers(coordinates, atom_distance, n_layers):
+def add_layers(coordinates, atom_distance, atom_radius, n_layers):
     """
     Add n layers of atoms at the specified distance from the given coordinates.
 
@@ -91,53 +91,13 @@ def add_layers(coordinates, atom_distance, n_layers):
     # Add layers
     for i in range(1, n_layers ):
         layer = coordinates.copy()
-        layer[:, 2] += i * atom_distance  # Assume third column is z-coordinate
+        layer[:, 2] += i * (atom_distance + 2 * atom_radius)  # Assume third column is z-coordinate
         new_coordinates = np.vstack([new_coordinates, layer])
         new_id = np.hstack([new_id, atom_id + max_type * i])
 
     new_atoms = np.hstack((new_id.reshape(-1,1), new_coordinates))
 
     return new_atoms
-
-import numpy as np
-
-def calculate_rdf(coordinates, atom_types, dr, r_max):
-    """
-    Calculate the radial distribution function.
-
-    Parameters:
-    coordinates (numpy.ndarray): The coordinates of the particles.
-    atom_types (numpy.ndarray): The type of each atom.
-    dr (float): The width of the bins in the histogram.
-    r_max (float): The maximum distance to consider in the RDF calculation.
-
-    Returns:
-    tuple: (g, r) where g is the RDF and r is the array of distance bins.
-    """
-    from scipy.spatial.distance import pdist, squareform
-
-    # Number of particles
-    N = len(coordinates)
-
-    # Calculate the pairwise distances
-    r = pdist(coordinates)
-
-    # Only consider distances up to r_max
-    r = r[r < r_max]
-
-    # Generate the bins for the histogram
-    bins = np.arange(0, r_max, dr)
-
-    # Calculate the histogram
-    hist, edges = np.histogram(r, bins=bins)
-
-    # Normalize the RDF
-    rho = N / (4/3 * np.pi * r_max**3)  # density
-    r = edges[:-1] + dr/2  # positions of the bin centers
-    ideal_hist = 4 * np.pi * rho * r**2 * dr  # ideal histogram for a uniform distribution
-    g = hist / ideal_hist
-
-    return g, r
 
 
 def generate_membrane(length, width, atom_distance, atom_radius, n_layers, filename, atom_names):
@@ -156,37 +116,24 @@ def generate_membrane(length, width, atom_distance, atom_radius, n_layers, filen
 
     # Generate the atom coordinates
     atom_cord  = atom_coordinates_np(length, width, atom_distance, atom_radius)
-
+    
     # Add layers to the coordinates
-    added_layers = add_layers(atom_cord, atom_distance, n_layers)
-
-    # # Split the atom names
-    # atom_names = atom_names.split(',')
+    added_layers = add_layers(atom_cord, atom_distance, atom_radius, n_layers)
 
     # Generate the .gro file
     write_gro_file(added_layers, atom_names, filename)
-
-    g, r = calculate_rdf(added_layers[:,1:], added_layers[:,0], .1, 5)
-    import matplotlib.pyplot as plt
-    # Plot the RDF
-    plt.figure(figsize=(7, 5))
-    plt.plot(r, g, label='g(r)')
-    plt.title('Radial Distribution Function')
-    plt.xlabel('Distance (r)')
-    plt.ylabel('g(r)')
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(filename[:-4] + '.png')
-
+    
+    
+    
 if __name__ == "__main__":
     
     # Define the argument parser
     parser = argparse.ArgumentParser(description='Create a .gro file of atom coordinates.')
 
     # Add the arguments
-    parser.add_argument('--length', type=float, default = 400, help='The length of the 2D space.')
-    parser.add_argument('--width', type=float, default = 400, help='The width of the 2D space.')
-    parser.add_argument('--atom_distance', type=float, default = 1, help='The distance between atoms.')
+    parser.add_argument('--length', type=float, default = 50, help='The length of the 2D space.')
+    parser.add_argument('--width', type=float, default = 50, help='The width of the 2D space.')
+    parser.add_argument('--atom_distance', type=float, default = 0, help='The distance between atoms.')
     parser.add_argument('--atom_radius', type=float, default = .5, help='The radius of the atoms.')
     parser.add_argument('--n_layers', type=int, default = 6, help='The number of layers to add.')
     parser.add_argument('--filename', type=str, required=True, help='The name of the output .gro file.')
