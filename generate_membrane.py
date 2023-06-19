@@ -67,7 +67,7 @@ def write_gro_file(atoms,  name_str_arr, filename, velocity = None):
 
 
 
-def add_layers(coordinates, atom_distance, atom_radius, n_layers):
+def add_layers(coordinates, layer_distance, atom_radius, n_layers, membrane_gap = None):
     """
     Add n layers of atoms at the specified distance from the given coordinates.
 
@@ -88,10 +88,15 @@ def add_layers(coordinates, atom_distance, atom_radius, n_layers):
     new_coordinates = coordinates.copy()
     new_id = atom_id.copy()
     max_type = np.max(atom_id)
+    
+    
     # Add layers
+    layer = coordinates.copy()
     for i in range(1, n_layers ):
-        layer = coordinates.copy()
-        layer[:, 2] += i * (atom_distance + 2 * atom_radius)  # Assume third column is z-coordinate
+        if membrane_gap is not None and i == 3:
+            layer[:, 2] += membrane_gap + (layer_distance + 2 * atom_radius) 
+        else:
+            layer[:, 2] += (layer_distance + 2 * atom_radius)  # Assume third column is z-coordinate
         new_coordinates = np.vstack([new_coordinates, layer])
         new_id = np.hstack([new_id, atom_id + max_type * i])
 
@@ -100,7 +105,7 @@ def add_layers(coordinates, atom_distance, atom_radius, n_layers):
     return new_atoms
 
 
-def generate_membrane(length, width, atom_distance, atom_radius, n_layers, filename, atom_names):
+def generate_membrane(length, width, atom_distance, layer_distance, atom_radius, n_layers, membrane_gap, filename, atom_names):
     """
     Generate a .gro file of atom coordinates.
 
@@ -108,6 +113,7 @@ def generate_membrane(length, width, atom_distance, atom_radius, n_layers, filen
     length (float): The length of the 2D space.
     width (float): The width of the 2D space.
     atom_distance (float): The distance between atoms.
+    layer_distance (float): The distance between layers of atoms (in z-direction)
     atom_radius (float): The radius of the atoms.
     n_layers (int): The number of layers to add.
     filename (str): The name of the output .gro file.
@@ -118,7 +124,7 @@ def generate_membrane(length, width, atom_distance, atom_radius, n_layers, filen
     atom_cord  = atom_coordinates_np(length, width, atom_distance, atom_radius)
     
     # Add layers to the coordinates
-    added_layers = add_layers(atom_cord, atom_distance, atom_radius, n_layers)
+    added_layers = add_layers(atom_cord, layer_distance, atom_radius, n_layers, membrane_gap)
 
     # Generate the .gro file
     write_gro_file(added_layers, atom_names, filename)
@@ -134,12 +140,15 @@ if __name__ == "__main__":
     parser.add_argument('--length', type=float, default = 50, help='The length of the 2D space.')
     parser.add_argument('--width', type=float, default = 50, help='The width of the 2D space.')
     parser.add_argument('--atom_distance', type=float, default = 0, help='The distance between atoms.')
+    parser.add_argument('--layer_distance', type=float, default = 0, help='The distance between layers of atoms.')
     parser.add_argument('--atom_radius', type=float, default = .5, help='The radius of the atoms.')
     parser.add_argument('--n_layers', type=int, default = 6, help='The number of layers to add.')
+    parser.add_argument('--membrane_gap', type=float, default = 0, help='gap between membrane layer.')
     parser.add_argument('--filename', type=str, required=True, help='The name of the output .gro file.')
     parser.add_argument('--atom_names', type=str, default = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'] , help='A comma-separated list of atom names.')
 
     # Parse the arguments
     args = parser.parse_args()
     
-    generate_membrane(args.length, args.width, args.atom_distance, args.atom_radius, args.n_layers, args.filename, args.atom_names)
+    generate_membrane(args.length, args.width, args.atom_distance, args.layer_distance, args.atom_radius, args.n_layers, 
+                      args.membrane_gap, args.filename, args.atom_names)
