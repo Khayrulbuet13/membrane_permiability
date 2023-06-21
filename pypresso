@@ -8,9 +8,9 @@
 #
 
 if test -n "$PYTHONPATH"; then
-  PYTHONPATH="/home/mdi220/simulations/EspressoMD-4.2.1/ligand_receptor/src/python:$PYTHONPATH"
+  PYTHONPATH="/home/mdi220/simulations/ALL_ESPRESSO/EspressoMD-4.2.1/ligand_receptor/src/python:$PYTHONPATH"
 else
-  PYTHONPATH="/home/mdi220/simulations/EspressoMD-4.2.1/ligand_receptor/src/python"
+  PYTHONPATH="/home/mdi220/simulations/ALL_ESPRESSO/EspressoMD-4.2.1/ligand_receptor/src/python"
 fi
 export PYTHONPATH
 
@@ -38,7 +38,7 @@ if [ "GNU" != "GNU" ] && [ "OFF" = "ON" ] && [ "OFF" != "ON" ]; then
 fi
 export LD_PRELOAD
 if [ "OFF" = "ON" ]; then
-  export UBSAN_OPTIONS="print_stacktrace=1 suppressions=\"/home/mdi220/simulations/EspressoMD-4.2.1/maintainer/CI/ubsan.supp\" $UBSAN_OPTIONS"
+  export UBSAN_OPTIONS="print_stacktrace=1 suppressions=\"/home/mdi220/simulations/ALL_ESPRESSO/EspressoMD-4.2.1/maintainer/CI/ubsan.supp\" $UBSAN_OPTIONS"
   if [ "OFF" = "ON" ]; then
     export UBSAN_OPTIONS="halt_on_error=1 $UBSAN_OPTIONS"
   fi
@@ -62,56 +62,56 @@ fi
 case "$1" in
     --gdb)
         shift
-        [ "/home/mdi220/Desktop/esp/bin/python3.8" = "IPYTHON_EXECUTABLE-NOTFOUND" ] && exec gdb -ex "set print thread-events off" -ex "set exec-wrapper sh -c 'exec \"IPYTHON_EXECUTABLE-NOTFOUND\" \"\$@\"'" --args "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
-        exec gdb --args "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        [ "/home/mdi220/.virtualenvs/esp/bin/python3.8" = "IPYTHON_EXECUTABLE-NOTFOUND" ] && exec gdb -ex "set print thread-events off" -ex "set exec-wrapper sh -c 'exec \"IPYTHON_EXECUTABLE-NOTFOUND\" \"\$@\"'" --args "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
+        exec gdb --args "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     --lldb)
         shift
-        exec lldb -- "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        exec lldb -- "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     --coverage)
         shift
-        exec /home/mdi220/Desktop/esp/bin/python3.8 -m coverage run --source=/home/mdi220/simulations/EspressoMD-4.2.1/ligand_receptor/testsuite/ --rcfile="/home/mdi220/simulations/EspressoMD-4.2.1/.coveragerc" "$@"
+        exec /home/mdi220/.virtualenvs/esp/bin/python3.8 -m coverage run --source=/home/mdi220/simulations/ALL_ESPRESSO/EspressoMD-4.2.1/ligand_receptor/testsuite/ --rcfile="/home/mdi220/simulations/ALL_ESPRESSO/EspressoMD-4.2.1/.coveragerc" "$@"
         ;;
     --valgrind)
         shift
-        exec valgrind --leak-check=full "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        exec valgrind --leak-check=full "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     --cuda-gdb)
         shift
-        exec cuda-gdb --args "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        exec cuda-gdb --args "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     --cuda-memcheck)
         shift
-        exec cuda-memcheck "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        exec cuda-memcheck "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     --gdb=*)
         options="${1#*=}"
         shift
-        [ "/home/mdi220/Desktop/esp/bin/python3.8" = "IPYTHON_EXECUTABLE-NOTFOUND" ] && exec gdb -ex "set print thread-events off" -ex "set exec-wrapper sh -c 'exec \"IPYTHON_EXECUTABLE-NOTFOUND\" \"\$@\"'" ${options} --args "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
-        exec gdb ${options} --args "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        [ "/home/mdi220/.virtualenvs/esp/bin/python3.8" = "IPYTHON_EXECUTABLE-NOTFOUND" ] && exec gdb -ex "set print thread-events off" -ex "set exec-wrapper sh -c 'exec \"IPYTHON_EXECUTABLE-NOTFOUND\" \"\$@\"'" ${options} --args "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
+        exec gdb ${options} --args "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     --lldb=*)
         options="${1#*=}"
         shift
-        exec lldb ${options} -- "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        exec lldb ${options} -- "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     --valgrind=*)
         options="${1#*=}"
         shift
-        exec valgrind ${options} "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        exec valgrind ${options} "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     --cuda-gdb=*)
         options="${1#*=}"
         shift
-        exec cuda-gdb ${options} --args "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        exec cuda-gdb ${options} --args "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     --cuda-memcheck=*)
         options="${1#*=}"
         shift
-        exec cuda-memcheck ${options} "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        exec cuda-memcheck ${options} "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
     *)
-        exec "/home/mdi220/Desktop/esp/bin/python3.8" "$@"
+        exec "/home/mdi220/.virtualenvs/esp/bin/python3.8" "$@"
         ;;
 esac

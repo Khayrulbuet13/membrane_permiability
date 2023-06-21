@@ -1,0 +1,167 @@
+adding atoms with H1 = 1 type
+adding atoms with T1 = 2 type
+adding atoms with T2 = 3 type
+adding atoms with T3 = 4 type
+adding atoms with T4 = 5 type
+adding atoms with H2 = 6 type
+Head-Head interaction between 1 and 1
+Head-Tail interaction between 1 and 2
+Head-Tail interaction between 1 and 3
+Head-Tail interaction between 1 and 4
+Head-Tail interaction between 1 and 5
+Head-Head interaction between 1 and 6
+Tail-Tail interaction between 2 and 2
+Tail-Tail interaction between 2 and 3
+Tail-Tail interaction between 2 and 4
+Tail-Tail interaction between 2 and 5
+Head-Tail interaction between 2 and 6
+Tail-Tail interaction between 3 and 3
+Tail-Tail interaction between 3 and 4
+Tail-Tail interaction between 3 and 5
+Head-Tail interaction between 3 and 6
+Tail-Tail interaction between 4 and 4
+Tail-Tail interaction between 4 and 5
+Head-Tail interaction between 4 and 6
+Tail-Tail interaction between 5 and 5
+Head-Tail interaction between 5 and 6
+Head-Head interaction between 6 and 6
+tail-tail lj_cos2 interaction between 1 and 1
+tail-tail lj_cos2 interaction between 1 and 2
+tail-tail lj_cos2 interaction between 1 and 3
+tail-tail lj_cos2 interaction between 1 and 4
+tail-tail lj_cos2 interaction between 1 and 5
+tail-tail lj_cos2 interaction between 1 and 6
+tail-tail lj_cos2 interaction between 2 and 1
+tail-tail lj_cos2 interaction between 2 and 2
+tail-tail lj_cos2 interaction between 2 and 3
+tail-tail lj_cos2 interaction between 2 and 4
+tail-tail lj_cos2 interaction between 2 and 5
+tail-tail lj_cos2 interaction between 2 and 6
+tail-tail lj_cos2 interaction between 3 and 1
+tail-tail lj_cos2 interaction between 3 and 2
+tail-tail lj_cos2 interaction between 3 and 3
+tail-tail lj_cos2 interaction between 3 and 4
+tail-tail lj_cos2 interaction between 3 and 5
+tail-tail lj_cos2 interaction between 3 and 6
+tail-tail lj_cos2 interaction between 4 and 1
+tail-tail lj_cos2 interaction between 4 and 2
+tail-tail lj_cos2 interaction between 4 and 3
+tail-tail lj_cos2 interaction between 4 and 4
+tail-tail lj_cos2 interaction between 4 and 5
+tail-tail lj_cos2 interaction between 4 and 6
+tail-tail lj_cos2 interaction between 5 and 1
+tail-tail lj_cos2 interaction between 5 and 2
+tail-tail lj_cos2 interaction between 5 and 3
+tail-tail lj_cos2 interaction between 5 and 4
+tail-tail lj_cos2 interaction between 5 and 5
+tail-tail lj_cos2 interaction between 5 and 6
+tail-tail lj_cos2 interaction between 6 and 1
+tail-tail lj_cos2 interaction between 6 and 2
+tail-tail lj_cos2 interaction between 6 and 3
+tail-tail lj_cos2 interaction between 6 and 4
+tail-tail lj_cos2 interaction between 6 and 5
+tail-tail lj_cos2 interaction between 6 and 6
+Starting nvt1 Ensemble:
+Step 0 took 1.37 seconds
+Step 1 took 1.21 seconds
+Step 2 took 1.18 seconds
+Step 3 took 1.20 seconds
+Step 4 took 1.18 seconds
+Step 5 took 1.20 seconds
+Step 6 took 1.18 seconds
+Step 7 took 1.19 seconds
+Step 8 took 1.21 seconds
+Step 9 took 1.24 seconds
+Step 10 took 1.43 seconds
+Step 11 took 1.58 seconds
+Step 12 took 1.63 seconds
+Step 13 took 1.66 seconds
+Step 14 took 1.67 seconds
+Step 15 took 1.65 seconds
+Step 16 took 1.62 seconds
+Step 17 took 1.64 seconds
+Step 18 took 1.63 seconds
+Step 19 took 1.62 seconds
+Step 20 took 1.63 seconds
+Step 21 took 1.64 seconds
+Step 22 took 1.64 seconds
+Step 23 took 1.64 seconds
+Step 24 took 1.63 seconds
+Step 25 took 1.63 seconds
+Step 26 took 1.65 seconds
+Step 27 took 1.63 seconds
+Step 28 took 1.62 seconds
+Step 29 took 1.62 seconds
+Step 30 took 1.61 seconds
+Step 31 took 1.61 seconds
+Step 32 took 1.61 seconds
+Step 33 took 1.61 seconds
+Step 34 took 1.61 seconds
+Step 35 took 1.62 seconds
+Step 36 took 1.62 seconds
+Step 37 took 1.60 seconds
+Step 38 took 1.61 seconds
+Step 39 took 1.60 seconds
+Step 40 took 1.62 seconds
+Step 41 took 1.61 seconds
+Step 42 took 1.61 seconds
+Step 43 took 1.61 seconds
+Step 44 took 1.62 seconds
+Step 45 took 1.63 seconds
+Step 46 took 1.62 seconds
+Step 47 took 1.63 seconds
+Step 48 took 1.63 seconds
+Step 49 took 1.63 seconds
+Finished nvt1 Ensemble:
+Starting nvt2 Ensemble:
+Step 0 took 1.70 seconds
+Step 1 took 1.70 seconds
+Step 2 took 1.70 seconds
+Step 3 took 1.71 seconds
+Step 4 took 1.71 seconds
+Step 5 took 1.73 seconds
+Step 6 took 1.72 seconds
+Step 7 took 1.72 seconds
+Step 8 took 1.70 seconds
+Step 9 took 1.70 seconds
+Step 10 took 1.71 seconds
+Step 11 took 1.70 seconds
+Step 12 took 1.70 seconds
+Step 13 took 1.71 seconds
+Step 14 took 1.70 seconds
+Step 15 took 1.71 seconds
+Step 16 took 1.71 seconds
+Step 17 took 1.72 seconds
+Step 18 took 1.72 seconds
+Step 19 took 1.72 seconds
+Step 20 took 1.71 seconds
+Step 21 took 1.71 seconds
+Step 22 took 1.70 seconds
+Step 23 took 1.69 seconds
+Step 24 took 1.68 seconds
+Step 25 took 1.70 seconds
+Step 26 took 1.71 seconds
+Step 27 took 1.71 seconds
+Step 28 took 1.73 seconds
+Step 29 took 1.73 seconds
+Step 30 took 1.71 seconds
+Step 31 took 1.69 seconds
+Step 32 took 1.69 seconds
+Step 33 took 1.70 seconds
+Step 34 took 1.70 seconds
+Step 35 took 1.71 seconds
+Step 36 took 1.69 seconds
+Step 37 took 1.68 seconds
+Step 38 took 1.71 seconds
+Step 39 took 1.71 seconds
+Step 40 took 1.71 seconds
+Step 41 took 1.71 seconds
+Step 42 took 1.72 seconds
+Step 43 took 1.72 seconds
+Step 44 took 1.73 seconds
+Step 45 took 1.70 seconds
+Step 46 took 1.70 seconds
+Step 47 took 1.70 seconds
+Step 48 took 1.70 seconds
+Step 49 took 1.71 seconds
+Finished nvt2 Ensemble:
