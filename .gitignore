@@ -3,3 +3,4 @@
 membrane_env
 *.gro
 results/*
+visualization/*

@@ -3,6 +3,57 @@ import numpy as np
 import os
 import time
 
+
+from espressomd import shapes
+import object_in_fluid as oif
+def create_box(BOX_L,BOX_W,BOX_H, directory):
+        length  = BOX_L
+        width  = BOX_W
+        hight  = BOX_H
+
+        # check if folder exists create if not
+        directory = directory + '/vtk'
+        if not os.path.exists(directory): 
+            os.makedirs(directory)
+        
+        boundaries=[]
+        # left wall
+        tmp_shape = shapes.Rhomboid(corner=[0.0, 0.0, 0.0],a=[1.0, 0.0, 0.0],b=[0.0, width, 0.0],c=[0.0, 0.0, hight], direction=1)
+        boundaries.append(tmp_shape)
+        oif.output_vtk_rhomboid(rhom_shape=tmp_shape, out_file=directory + '/wallLeft.vtk')
+
+        # Rigth wall
+        tmp_shape = shapes.Rhomboid(corner=[length-1, 0.0, 0.0],a=[1, 0.0, 0.0],b=[0.0, width, 0.0],c=[0.0, 0.0, hight], direction=1)
+        boundaries.append(tmp_shape)
+        oif.output_vtk_rhomboid(rhom_shape=tmp_shape, out_file=directory + '/wallRigth.vtk')
+        
+        
+        
+        # bottom wall
+        tmp_shape = shapes.Rhomboid(corner=[0.0, 0.0, 0.0],a=[length, 0.0, 0.0],b=[0.0, width, 0.0],c=[0.0, 0.0, 1.0], direction=1)
+        boundaries.append(tmp_shape)
+        oif.output_vtk_rhomboid(rhom_shape=tmp_shape, out_file=directory + '/wallBottom.vtk')
+
+        # top wall
+        tmp_shape = shapes.Rhomboid(corner=[0.0, 0.0, hight],a=[length, 0.0, 0.0],b=[0.0, width, 0.0],c=[0.0, 0.0, - 1.0], direction=1)
+        boundaries.append(tmp_shape)
+        oif.output_vtk_rhomboid(rhom_shape=tmp_shape, out_file=directory + '/wallTop.vtk')
+
+        # Front wall
+        tmp_shape = shapes.Rhomboid(corner=[0.0, 0.0, 0.0],a=[length, 0.0, 0.0],b=[0.0, 1.0, 0.0],c=[0.0, 0.0, hight],direction=1)
+        boundaries.append(tmp_shape)
+        oif.output_vtk_rhomboid(rhom_shape=tmp_shape, out_file=directory + '/wallFront.vtk')
+
+        # back wall
+        tmp_shape = shapes.Rhomboid(corner=[0.0, width - 1.0, 0.0],a=[length, 0.0, 0.0],b=[0.0, 1.0, 0.0],c=[0.0, 0.0, hight],direction=1)
+        boundaries.append(tmp_shape)
+        oif.output_vtk_rhomboid(rhom_shape=tmp_shape, out_file=directory + '/wallBack.vtk')
+
+        return boundaries
+
+
+
+
 def read_gro_file(file_path):
     atom_list = []
     atom_data = []

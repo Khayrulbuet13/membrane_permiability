@@ -13,10 +13,6 @@ import numpy as np
 simulation_name = 'membrane_simulation'
 simulation_folder = 'results/' + simulation_name
 
-# # delete folder if exists
-# if os.path.exists(simulation_folder):
-#     shutil.rmtree(simulation_folder)
-
 # check if folder exists create if not
 if not os.path.exists(simulation_folder): 
     os.makedirs(simulation_folder)
@@ -36,7 +32,6 @@ system = espressomd.System(box_l=(BOX_L, BOX_W, BOX_H))
 system.time_step = time_step
 system.cell_system.skin = 1.0
 
-boundaries = create_box(BOX_L, BOX_W, BOX_H, simulation_folder)
 
 # read atoms from gro file
 mem_df, atom_names = read_gro_file('membrane.gro')
@@ -54,33 +49,8 @@ for i, atom in enumerate(atom_types, start=1):
         particles.append(part_count)
         part_count+= 1
     particle_dict[atom] = particles
-
-
-# add diffusion particles
-def generate_random_particles(n, box):
-    particles = np.random.uniform(np.array([2,2,2]), box, size=(n, len(box)))
-    return particles
-
-rand_part = generate_random_particles(500, np.array([BOX_L-2, BOX_W-2, BOX_H/2 - mem_center[2]-3]))
-rand_type = np.max(np.array([p.type for p in system.part])) + 1
-for i in range(rand_part.shape[0]):
-    system.part.add(id = part_count,   pos=[rand_part[i,0], rand_part[i,1], rand_part[i,2]], type= rand_type)
-    part_count+= 1
         
-system.non_bonded_inter[rand_type, rand_type].lennard_jones.set_params(epsilon=1.0, sigma=0.1, cutoff=0.95*2**(1./ 6), shift =0.25)       
-atom_types = np.append(atom_types, 'R1')
-
-from espressomd import lbboundaries
-for boundary in boundaries:
-    system.lbboundaries.add(lbboundaries.LBBoundary(shape=boundary, velocity=[0.0,0.0,0.0]))
-    system.constraints.add(shape=boundary, particle_type=0, penetrable=False)
-
-# system.non_bonded_inter[0, rand_type].lennard_jones.set_params(epsilon=1.0, sigma=0.1, cutoff=0.95*2**(1./ 6), shift =0.25)
-system.non_bonded_inter[0, rand_type].lennard_jones.set_params(epsilon=1.0,
-                                                       sigma=1.0,
-                                                       cutoff=1.12246204831,
-                                                       shift = 'auto')
-
+        
 
 #############################################################################################################
 ##################################### NON BONDED INTERACTIONS ###############################################
@@ -159,36 +129,7 @@ steps = 50
 name = 'nvt1'
 sim_runner(system, steps, simulation_folder, name, atom_types)
 
-
 #############################################################################################################
-#
-#                                   NVT Ensemble
-#
-#############################################################################################################
-
-
-# Setting-up Thermosttat and Integrator
-system.thermostat.turn_off()
-system.integrator.set_vv() # same as set_nvt
-system.thermostat.set_langevin(kT=0.2, gamma=2,seed=143)
-steps = 50
-name = 'nvt2'
-sim_runner(system, steps, simulation_folder, name, atom_types)
-
-#############################################################################################################
-#
-#                                   NVT Ensemble
-#
-#############################################################################################################
-
-
-# Setting-up Thermosttat and Integrator
-system.thermostat.turn_off()
-system.integrator.set_vv() # same as set_nvt
-system.thermostat.set_langevin(kT=0.4, gamma=2,seed=143)
-steps = 5000
-name = 'nvt3'
-sim_runner(system, steps, simulation_folder, name, atom_types)
 
 #############################################################################################################
 #
@@ -201,44 +142,16 @@ sim_runner(system, steps, simulation_folder, name, atom_types)
 system.thermostat.turn_off()
 system.integrator.set_vv() # same as set_nvt
 system.thermostat.set_langevin(kT=0.6, gamma=2,seed=143)
-steps = 5000
-name = 'nvt4'
+steps = 50
+name = 'nvt2'
 sim_runner(system, steps, simulation_folder, name, atom_types)
+
+#############################################################################################################
+
+
 
 #############################################################################################################
 #
 #                                   Production
 #
 #############################################################################################################
-
-
-y_axis = 
-x_axis = 
-
-# color = ['#003f5c','#bc5090','#ff6361','#ffa600']
-# color = ['#0C2D48','#5E8D5A','#F68F3C','#5E8D5A']
-
-font = {'family' : 'Arial', 'size'   : 20}
-plt.rc('font', **font)
-plt.rc('text', usetex=True)
-
-fig, ax = plt.subplots(figsize=(12,10), dpi= 50)
-ax.plot(x_axis,y_axis,linestyle = '--',label='', color ='#0C2D48', linewidth=4.0)
-
-# figure property #
-font_size=29
-plt.legend(fontsize=23)
-plt.xlabel('time ($$)',fontsize=font_size)
-plt.xticks(fontsize=font_size)
-plt.yticks(fontsize=font_size)
-plt.ylabel('Droplet velocity (m/sec$)',fontsize=font_size)
-plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-plt.rc('font', size=25)
-ax.xaxis.set_tick_params(width=2.5,length =10,direction='in')
-ax.yaxis.set_tick_params(width=2.5,length =10,direction='in')
-plt.rcParams['axes.linewidth'] = 2.50
-# plt.legend(loc='upper right',fontsize=20)
-image_format = 'svg' # e.g .png, .svg, etc.
-filename = ' '
-image_name = '{}.svg'.format(filename)
-plt.savefig(image_name, format=image_format, dpi=300, bbox_inches='tight')
