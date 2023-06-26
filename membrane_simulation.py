@@ -13,9 +13,9 @@ import numpy as np
 simulation_name = 'membrane_simulation'
 simulation_folder = 'results/' + simulation_name
 
-# # delete folder if exists
-# if os.path.exists(simulation_folder):
-#     shutil.rmtree(simulation_folder)
+# delete folder if exists
+if os.path.exists(simulation_folder):
+    shutil.rmtree(simulation_folder)
 
 # check if folder exists create if not
 if not os.path.exists(simulation_folder): 
@@ -39,7 +39,7 @@ system.cell_system.skin = 1.0
 boundaries = create_box(BOX_L, BOX_W, BOX_H, simulation_folder)
 
 # read atoms from gro file
-mem_df, atom_names = read_gro_file('membrane.gro')
+mem_df, atom_names = read_gro_file('membrane_fiboblast.gro')
 atom_types = mem_df['Atom'].unique()
 mem_center = mem_df[['X', 'Y', 'Z']].mean().values
 
@@ -90,12 +90,15 @@ particle_types=[1,2,3,4,5,6]
 tail_types=[2,3,4,5]
 head_types = [1, 6]
 LJ_EPS = 1.0
-LJ_SIG = 1.2
+LJ_SIG = 1
 # Non-bonded LJ interactions
 for i in particle_types:
     for j in particle_types:
         if i <= j:
             # Check the type of each particle
+            #if i == 3 and j==4:
+            #    continue
+        
             if i in head_types and j in head_types:
                 system.non_bonded_inter[i, j].lennard_jones.set_params(epsilon=LJ_EPS, sigma=LJ_SIG, cutoff=0.95*2**(1./ 6), shift =0.25)
                 print(f"Head-Head interaction between {i} and {j}")
@@ -109,13 +112,17 @@ for i in particle_types:
 # Non-bonded LJ-COS2 interactions
 for i_elem in particle_types:
     for j_elem in particle_types:
+        #if i_elem == 3 and j_elem==4:
+        #    continue
         if i_elem == j_elem:
             system.non_bonded_inter[i_elem, j_elem].lennard_jones_cos2.set_params(epsilon=1.0, sigma=LJ_SIG, width=1.6)
         if j_elem > i_elem:
             system.non_bonded_inter[i_elem, j_elem].lennard_jones_cos2.set_params(epsilon=1.0, sigma=LJ_SIG, width=1.6)
         print(f"tail-tail lj_cos2 interaction between {i_elem} and {j_elem}")
 
-
+# with membrane gap on sigma = sigma + membrane_gap
+#system.non_bonded_inter[3, 4].lennard_jones.set_params(epsilon=LJ_EPS, sigma=LJ_SIG + .2, cutoff=0.95*2**(1./ 6), shift =0.25)
+#system.non_bonded_inter[3, 4].lennard_jones_cos2.set_params(epsilon=1.0, sigma=LJ_SIG + .2, width=1.6)
         
 #############################################################################################################
 ######################################  BONDED INTERACTIONS #################################################
@@ -210,35 +217,3 @@ sim_runner(system, steps, simulation_folder, name, atom_types)
 #                                   Production
 #
 #############################################################################################################
-
-
-y_axis = 
-x_axis = 
-
-# color = ['#003f5c','#bc5090','#ff6361','#ffa600']
-# color = ['#0C2D48','#5E8D5A','#F68F3C','#5E8D5A']
-
-font = {'family' : 'Arial', 'size'   : 20}
-plt.rc('font', **font)
-plt.rc('text', usetex=True)
-
-fig, ax = plt.subplots(figsize=(12,10), dpi= 50)
-ax.plot(x_axis,y_axis,linestyle = '--',label='', color ='#0C2D48', linewidth=4.0)
-
-# figure property #
-font_size=29
-plt.legend(fontsize=23)
-plt.xlabel('time ($$)',fontsize=font_size)
-plt.xticks(fontsize=font_size)
-plt.yticks(fontsize=font_size)
-plt.ylabel('Droplet velocity (m/sec$)',fontsize=font_size)
-plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-plt.rc('font', size=25)
-ax.xaxis.set_tick_params(width=2.5,length =10,direction='in')
-ax.yaxis.set_tick_params(width=2.5,length =10,direction='in')
-plt.rcParams['axes.linewidth'] = 2.50
-# plt.legend(loc='upper right',fontsize=20)
-image_format = 'svg' # e.g .png, .svg, etc.
-filename = ' '
-image_name = '{}.svg'.format(filename)
-plt.savefig(image_name, format=image_format, dpi=300, bbox_inches='tight')
