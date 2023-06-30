@@ -1,1 +1,2 @@
-# membrane_permiability
+# Membrane Permeability Simulation Project
+
